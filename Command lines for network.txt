@@ -1,0 +1,5 @@
+C:\Users\ADM\Documents\GitHub\ArenaGodBuilds\ArenaDogs.exe -mode server
+
+C:\Users\ADM\Documents\GitHub\ArenaGodBuilds\ArenaDogs.exe -mode client
+
+C:\Users\ADM\Documents\GitHub\ArenaGodBuilds\ArenaDogs.exe -logfile -log-server.txt -mode server & C:\Users\ADM\Documents\GitHub\ArenaGodBuilds\ArenaDogs.exe -logfile -log-client.txt -mode client
