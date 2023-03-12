@@ -176,7 +176,7 @@ MonoBehaviour:
         exportConsts_playersClassName: Player
         exportConsts_inputBehaviors: 0
         exportConsts_inputBehaviorsClassName: InputBehavior
-        exportConsts_customControllers: 1
+        exportConsts_customControllers: 0
         exportConsts_customControllersClassName: CustomController
         exportConsts_customControllersAxesClassName: Axis
         exportConsts_customControllersButtonsClassName: Button
@@ -206,12 +206,15 @@ MonoBehaviour:
         _enabled: 1
         _ruleSets: []
     - _id: 1
-      _name: Player0
-      _descriptiveName: Player0
+      _name: Player
+      _descriptiveName: Player
       _startPlaying: 1
       _defaultJoystickMaps: []
       _defaultMouseMaps: []
-      _defaultKeyboardMaps: []
+      _defaultKeyboardMaps:
+      - _enabled: 1
+        _categoryId: 0
+        _layoutId: 0
       _defaultCustomControllerMaps: []
       _startingCustomControllers: []
       _assignMouseOnStart: 1
