@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class PlayerManager : NetworkBehaviour
 {
-    public NetworkObject playerNetObj;
+    //public NetworkObject playerNetObj;
+
+    public Animator Animator;
+
 
 }

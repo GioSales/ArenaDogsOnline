@@ -4,10 +4,13 @@ using UnityEngine;
 using Rewired;
 using Unity.Netcode;
 using SmartConsole;
+using UnityEngine.Serialization;
 
 public class PlayerMovement : NetworkCmndBehaviour
 {
-    [SerializeField] private float speed;
+    [FormerlySerializedAs("speed")]
+    [SerializeField] private float movSpeed;
+    [SerializeField] private float rotateSpeed = 2;
     private PlayerManager playerManager;
     private Player player;
     private CharacterController characterController;
@@ -44,7 +47,10 @@ public class PlayerMovement : NetworkCmndBehaviour
         float vAxis = player.GetAxis(RewiredConsts.Action.MoveVertical);
 
         if (HasMoved(hAxis, vAxis))
+        {
             Move(hAxis, vAxis);
+            RotateToInput(hAxis, vAxis);
+        }
     }
 
     private bool HasMoved(float hAxis, float vAxis)
@@ -54,8 +60,14 @@ public class PlayerMovement : NetworkCmndBehaviour
 
     private void Move(float hAxis, float vAxis)
     {
-        characterController.Move(new Vector3(hAxis, 0, vAxis) * speed * Time.deltaTime);
+        playerManager.Animator.SetInteger("Speed", GetSpeedAnimParam(hAxis, vAxis));
+        characterController.Move(new Vector3(hAxis, 0, vAxis) * movSpeed * Time.deltaTime);
         RequestMoveServerRpc(hAxis, vAxis, new ServerRpcParams());
+    }
+
+    private static int GetSpeedAnimParam(float hAxis, float vAxis)
+    {
+        return Mathf.RoundToInt(Mathf.Max(Mathf.Abs(hAxis), Mathf.Abs(vAxis)));
     }
 
     [ServerRpc]
@@ -67,6 +79,13 @@ public class PlayerMovement : NetworkCmndBehaviour
     private void SetClientValidPos(float hAxis, float vAxis, float deltaTime)
     {
         //Debug.Log($"Move client rpc: {clientRpcParams.Send.TargetClientIds}, hAxis: {hAxis}; vAxis: {vAxis}");
-        validPos.Value = new Vector3(hAxis, 0, vAxis) * speed * deltaTime;
+        validPos.Value = new Vector3(hAxis, 0, vAxis) * movSpeed * deltaTime;
+    }
+
+    private void RotateToInput(float hAxis, float vAxis)
+    {
+        float inputDirectionAngle = Mathf.Atan2(hAxis, vAxis) * Mathf.Rad2Deg;
+        Quaternion targetRot = Quaternion.Euler(0, inputDirectionAngle, 0);
+        transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, rotateSpeed * Time.deltaTime);
     }
 }
